@@ -1,0 +1,74 @@
+<html>
+<body>
+
+<script language="javascript" type="text/javascript">
+
+<!--
+//Browser Support Code
+function ajaxFunction(str){
+	var ajaxRequest;  // The variable that makes Ajax possible!
+	var sQuery = "SELECT title FROM movies WHERE";
+	try{
+		// Opera 8.0+, Firefox, Safari
+		ajaxRequest = new XMLHttpRequest();
+	} catch (e){
+		// Internet Explorer Browsers
+		try{
+			ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+			try{
+				ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e){
+				// Something went wrong
+				alert("Your browser broke!");
+				return false;
+			}
+		}
+	}
+
+	if (str.length == 0) {
+		document.getElementById("txtHint").innerHTML = "";
+		return;
+	} else {
+		var allWords = str.trim().split(" ");
+
+		ajaxRequest.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+        for (i = 0; i < allWords.length; i++) {
+          var temp = " title LIKE '%";
+					console.log(allWords[i]);
+          temp += allWords[i]+ "%' ";
+					if (i < allWords.length - 1){
+						temp += " and ";
+					}
+
+					sQuery += temp;
+        }
+				document.getElementById("txtHint").innerHTML = str;
+				document.getElementById("length").innerHTML = allWords.length;
+        document.getElementById("searchQuery").innerHTML = sQuery;
+				document.getElementById("response").innerHTML = ajaxRequest.response;
+			}
+		};
+	}
+	ajaxRequest.open("GET", "../TomcatForm/servlet.jsp?stringParameter="+str, true);
+	ajaxRequest.send(null);
+}
+
+//-->
+</script>
+
+
+
+<form name='myForm'>
+Item Name: <input type='text' name='username' onkeyup="ajaxFunction(this.value);"/> <br />
+<p>Suggestions: <span id="txtHint"></span></p>
+<p>String length: <span id="length"></span></p>
+<p>Search query: <span id="searchQuery"></span></p>
+<p>AJAX reponse: <span id="response"></span></p>
+
+</form>
+</body>
+</html>
+
+ <!-- onkeyup="ajaxFunction(this.value);" -->

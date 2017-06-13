@@ -1,0 +1,6 @@
+Explanation for uses of LIKE
+Team Swag
+
+We have three instances of "LIKE" in our search algorithm
+	1. When the user attempts to make a search involving a title parameter, then the database query will be in the following format: LIKE '%query%'
+	2. When the user attempts browse by first letter or number, then the dataabse query will be in the following format: LIKE '%c'
